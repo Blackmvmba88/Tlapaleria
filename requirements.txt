@@ -1,0 +1,15 @@
+# Dependencias de Python para Tlapalería CLI
+# Autor: Iyari Cancino Gomez
+# Cliente: Jesús Morán
+
+# No se requieren dependencias externas adicionales
+# La herramienta CLI usa solo bibliotecas estándar de Python 3:
+# - sqlite3 (incluida en Python)
+# - argparse (incluida en Python)
+# - datetime (incluida en Python)
+# - typing (incluida en Python)
+
+# Para desarrollo (opcional):
+# pytest>=7.0.0  # Para pruebas unitarias
+# black>=22.0.0  # Para formateo de código
+# flake8>=4.0.0  # Para linting

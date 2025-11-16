@@ -39,13 +39,40 @@ Las tlapalerías son el corazón del comercio de materiales de construcción en 
 - **Frontend**: React.js, TypeScript, Next.js
 - **Mobile**: React Native / Flutter
 - **Backend**: Node.js, Python
-- **Base de Datos**: PostgreSQL, Redis
+- **Base de Datos**: PostgreSQL, Redis, SQLite
+- **CLI**: Python 3 (Herramienta de terminal)
 - **Cloud**: AWS / Azure / GCP
 - **IA/ML**: TensorFlow, PyTorch
+
+## 🐍 CLI de Python
+
+Ahora incluye una **herramienta de línea de comandos en Python** para gestionar la tlapalería desde la terminal:
+
+```bash
+# Inicializar base de datos con datos de ejemplo
+python3 inicializar_db.py
+
+# Comandos básicos
+python3 tlapaleria_cli.py listar
+python3 tlapaleria_cli.py buscar "martillo"
+python3 tlapaleria_cli.py agregar "Producto" 100.50 --stock 20
+python3 tlapaleria_cli.py venta 1 3
+python3 tlapaleria_cli.py estadisticas
+```
+
+**Características de la CLI:**
+- ✅ Gestión completa de inventario desde terminal
+- ✅ Registro de ventas y actualización automática de stock
+- ✅ Alertas de productos con stock bajo
+- ✅ Estadísticas en tiempo real
+- ✅ Sin dependencias externas (solo Python estándar)
+
+📖 **Documentación completa**: [CLI_README.md](CLI_README.md)
 
 ## 📈 Estado del Proyecto
 
 🚧 **En Desarrollo** - Actualmente en Fase de Planificación
+✅ **CLI Python** - Funcional y lista para usar
 
 ## 🤝 Contribuciones
 
@@ -55,9 +82,11 @@ Las tlapalerías son el corazón del comercio de materiales de construcción en 
 
 Este proyecto está bajo la licencia especificada en el archivo [LICENSE](LICENSE).
 
-## 👤 Autor
+## 👤 Autores
 
-**JesusMoran**
+**Desarrollador CLI:** Iyari Cancino Gomez  
+**Cliente:** Jesús Morán  
+**Proyecto Original:** JesusMoran
 
 ---
 
