@@ -39,6 +39,7 @@
       "eas": {
         "projectId": "your-project-id-here"
       }
-    }
+    },
+    "_comment": "To use EAS Build, run 'eas build:configure' to generate a real project ID"
   }
 }

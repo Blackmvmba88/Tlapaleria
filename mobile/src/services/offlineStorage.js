@@ -239,7 +239,12 @@ export const metricasOfflineService = {
 // Utilidad para verificar estado de conexión
 export const checkConnection = async () => {
   try {
-    const response = await fetch(`${__DEV__ ? 'http://localhost:3000' : 'https://your-backend-url.com'}/api/health`, {
+    // URL del backend - configurar según el entorno
+    const backendUrl = __DEV__ 
+      ? 'http://localhost:3000' 
+      : process.env.API_URL?.replace('/api', '') || 'http://localhost:3000';
+    
+    const response = await fetch(`${backendUrl}/api/health`, {
       method: 'HEAD',
       timeout: 3000,
     });

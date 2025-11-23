@@ -96,11 +96,11 @@ const DashboardScreen = () => {
         <View style={styles.metricsContainer}>
           {/* Total de Ventas */}
           <View style={[styles.metricCard, styles.primaryCard]}>
-            <Text style={styles.metricLabel}>Ventas Totales</Text>
-            <Text style={styles.metricValue}>
+            <Text style={styles.primaryCardLabel}>Ventas Totales</Text>
+            <Text style={styles.primaryCardValue}>
               ${metricas.total_ventas?.toFixed(2) || '0.00'}
             </Text>
-            <Text style={styles.metricSubtext}>
+            <Text style={styles.primaryCardSubtext}>
               {metricas.numero_transacciones || 0} transacciones
             </Text>
           </View>
@@ -118,11 +118,11 @@ const DashboardScreen = () => {
 
           {/* Alertas de Stock Bajo */}
           <View style={[styles.metricCard, styles.warningCard]}>
-            <Text style={styles.metricLabel}>⚠️ Stock Bajo</Text>
-            <Text style={styles.metricValue}>
+            <Text style={styles.warningCardLabel}>⚠️ Stock Bajo</Text>
+            <Text style={styles.warningCardValue}>
               {metricas.productos_stock_bajo || 0}
             </Text>
-            <Text style={styles.metricSubtext}>Productos requieren reorden</Text>
+            <Text style={styles.warningCardSubtext}>Productos requieren reorden</Text>
           </View>
 
           {/* Promedio de Ventas */}
@@ -247,14 +247,36 @@ const styles = StyleSheet.create({
     color: '#999',
     fontSize: 12,
   },
+  primaryCardLabel: {
+    fontSize: 14,
+    color: '#e9d5ff',
+    marginBottom: 8,
+  },
+  primaryCardValue: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 5,
+  },
+  primaryCardSubtext: {
+    fontSize: 12,
+    color: '#e9d5ff',
+  },
+  warningCardLabel: {
+    fontSize: 14,
+    color: '#fff',
+    marginBottom: 8,
+  },
+  warningCardValue: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 5,
+  },
+  warningCardSubtext: {
+    fontSize: 12,
+    color: '#fff',
+  },
 });
-
-// Aplicar estilos especiales para cards con fondo de color
-styles.primaryCard.metricLabel = { ...styles.metricLabel, color: '#e9d5ff' };
-styles.primaryCard.metricValue = { ...styles.metricValue, color: '#fff' };
-styles.primaryCard.metricSubtext = { ...styles.metricSubtext, color: '#e9d5ff' };
-styles.warningCard.metricLabel = { ...styles.metricLabel, color: '#fff' };
-styles.warningCard.metricValue = { ...styles.metricValue, color: '#fff' };
-styles.warningCard.metricSubtext = { ...styles.metricSubtext, color: '#fff' };
 
 export default DashboardScreen;

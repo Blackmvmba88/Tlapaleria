@@ -11,6 +11,9 @@ class InventarioInteligenteService {
    */
   static async predecirDemanda(productoId, dias = 30) {
     return new Promise((resolve, reject) => {
+      // Validar y sanitizar el parámetro dias
+      const diasValidados = Math.max(1, Math.min(365, parseInt(dias) || 30));
+      
       const query = `
         SELECT 
           COUNT(*) as num_ventas,
@@ -20,20 +23,20 @@ class InventarioInteligenteService {
           MAX(fecha_venta) as ultima_venta
         FROM ventas
         WHERE producto_id = ?
-        AND fecha_venta >= datetime('now', '-${dias} days')
+        AND fecha_venta >= datetime('now', ? || ' days')
       `;
       
-      db.get(query, [productoId], (err, row) => {
+      db.get(query, [productoId, `-${diasValidados}`], (err, row) => {
         if (err) {
           reject(err);
         } else {
-          const ventasPorDia = row.total_vendido / dias;
+          const ventasPorDia = row.total_vendido / diasValidados;
           const prediccionSemanal = ventasPorDia * 7;
           const prediccionMensual = ventasPorDia * 30;
           
           resolve({
             productoId,
-            periodo_analizado: dias,
+            periodo_analizado: diasValidados,
             ventas_totales: row.total_vendido || 0,
             numero_transacciones: row.num_ventas || 0,
             promedio_por_venta: row.promedio_por_venta || 0,

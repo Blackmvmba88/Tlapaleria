@@ -2,10 +2,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// URL del backend - cambiar según el entorno
+// URL del backend - configurar según el entorno
+// IMPORTANTE: Cambiar estas URLs por las de tu servidor en producción
 const API_URL = __DEV__ 
-  ? 'http://localhost:3000/api'  // Desarrollo local
-  : 'https://your-backend-url.com/api';  // Producción
+  ? 'http://localhost:3000/api'  // Desarrollo local - cambiar localhost por IP local si usas dispositivo físico
+  : process.env.API_URL || 'http://localhost:3000/api';  // Producción - usar variable de entorno
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
