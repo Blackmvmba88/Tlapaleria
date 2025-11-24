@@ -5,7 +5,15 @@ const cors = require('cors');
 const session = require('express-session');
 const http = require('http');
 const { Server } = require('socket.io');
+const swaggerUi = require('swagger-ui-express');
 const db = require('./config/database');
+const swaggerSpec = require('./config/swagger');
+const { 
+  helmetConfig, 
+  generalLimiter, 
+  sanitizeInput, 
+  securityLogger 
+} = require('./middleware/security');
 
 // Importar rutas
 const authRoutes = require('./routes/auth');
@@ -16,6 +24,7 @@ const encuestasRoutes = require('./routes/encuestas');
 const comprasRoutes = require('./routes/compras');
 const metricsRoutes = require('./routes/metrics');
 const backupRoutes = require('./routes/backup');
+const inventarioRoutes = require('./routes/inventario');
 
 const app = express();
 const server = http.createServer(app);
@@ -26,13 +35,19 @@ const io = new Server(server, {
   }
 });
 
-// Middleware
+// Middleware de seguridad
+app.use(helmetConfig);
+app.use(securityLogger);
+app.use(generalLimiter);
+
+// Middleware básico
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(sanitizeInput);
 
 // Configuración de sesiones
 app.use(session({
@@ -45,6 +60,33 @@ app.use(session({
   }
 }));
 
+// Documentación de API con Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Tlapalería API Documentation'
+}));
+
+// Ruta para obtener spec en JSON
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+/**
+ * @swagger
+ * /api/health:
+ *   get:
+ *     summary: Verifica el estado del servidor
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Servidor funcionando correctamente
+ */
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Servidor funcionando correctamente' });
+});
+
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/productos', productosRoutes);
@@ -54,11 +96,7 @@ app.use('/api/encuestas', encuestasRoutes);
 app.use('/api/compras', comprasRoutes);
 app.use('/api/metrics', metricsRoutes);
 app.use('/api/backup', backupRoutes);
-
-// Ruta de prueba
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Servidor funcionando correctamente' });
-});
+app.use('/api/inventario', inventarioRoutes);
 
 // Socket.IO para mensajería en tiempo real
 io.on('connection', (socket) => {
@@ -99,8 +137,10 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+  console.log(`✅ Servidor corriendo en puerto ${PORT}`);
+  console.log(`📱 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+  console.log(`📚 Documentación API: http://localhost:${PORT}/api-docs`);
+  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
 });
 
 module.exports = { app, io };
